@@ -1,15 +1,20 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
+import StoreProvider from "./StoreProvider";
+import Sidebar from "@/components/ui/sidebar";
+import { Toaster } from "@/components/ui/toaster";
 
-const geistSans = Geist({
+const geistSans = localFont({
   variable: "--font-geist-sans",
-  subsets: ["latin"],
+  src: "./fonts/GeistVF.woff",
+  weight: "100 900",
 });
 
-const geistMono = Geist_Mono({
+const geistMono = localFont({
   variable: "--font-geist-mono",
-  subsets: ["latin"],
+  src: "./fonts/GeistMonoVF.woff",
+  weight: "100 900",
 });
 
 export const metadata: Metadata = {
@@ -24,11 +29,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
+      <StoreProvider>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          {" "}
+          <div className="h-screen flex bg-gray-100">
+            <Sidebar />
+            <main className="flex-1 overflow-y-auto p-8">
+              <div className="max-w-11xl mx-auto  sm:px-6 lg:px-8">
+                {children}
+              </div>
+            </main>
+          </div>
+          <Toaster />
+        </body>
+      </StoreProvider>
     </html>
   );
 }
